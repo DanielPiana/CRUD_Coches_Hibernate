@@ -6,99 +6,75 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.Button?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.crud_coches_hibernatesql.Controller.MainController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="586.0" prefWidth="406.0" style="-fx-background-color: #7BC0F5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.crud_coches_hibernatesql.Controller.MainController">
   <children>
-    <Label layoutX="60.0" layoutY="54.0" text="Matrícula">
-      <font>
-        <Font name="System Bold Italic" size="12.0" />
-      </font>
-    </Label>
-    <TextField fx:id="txtFieldMatricula" layoutX="164.0" layoutY="50.0">
-      <font>
-        <Font name="System Bold Italic" size="12.0" />
-      </font>
-      <effect>
-        <DropShadow />
-      </effect>
-    </TextField>
-    <ComboBox fx:id="cbTipo" layoutX="164.0" layoutY="200.0" prefWidth="150.0" />
-    <TableView fx:id="tableCoches" layoutX="19.0" layoutY="318.0" onMouseClicked="#onTableClick" prefHeight="263.0" prefWidth="642.0">
+    <TableView fx:id="tableCoches" layoutX="23.0" layoutY="322.0" onMouseClicked="#onTableClick" prefHeight="240.0" prefWidth="360.0" style="-fx-background-color: #A3D8F4;">
       <columns>
-        <TableColumn fx:id="columnaMatricula" prefWidth="152.0" text="Matrícula" />
-        <TableColumn fx:id="columnaMarca" prefWidth="120.0" text="Marca" />
-        <TableColumn fx:id="columnaModelo" prefWidth="205.0" text="Modelo" />
-        <TableColumn fx:id="columnaTipo" prefWidth="164.0" text="Tipo" />
+        <TableColumn fx:id="columnaMatricula" text="Matrícula" />
+        <TableColumn fx:id="columnaMarca" text="Marca" />
+        <TableColumn fx:id="columnaModelo" prefWidth="120.0" text="Modelo" />
+        <TableColumn fx:id="columnaTipo" text="Tipo" />
+            <TableColumn fx:id="columnaId" prefWidth="75.0" text="Id" visible="false" />
       </columns></TableView>
-    <Button fx:id="buttonGuardar" layoutX="60.0" layoutY="267.0" mnemonicParsing="false" onAction="#onButtonGuardarClick" prefHeight="31.0" prefWidth="77.0" text="Guardar">
+    <Button fx:id="buttonEliminar" layoutX="206.0" layoutY="263.0" mnemonicParsing="false" onAction="#onButtonEliminarClick" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #A3D8F4;" text="Eliminar">
       <font>
         <Font name="System Bold Italic" size="12.0" />
       </font>
-      <effect>
-        <DropShadow />
-      </effect>
     </Button>
-    <Button fx:id="buttonModificar" layoutX="160.0" layoutY="267.0" mnemonicParsing="false" onAction="#onButtonModificarClick" prefHeight="31.0" prefWidth="77.0" text="Modificar">
+    <Button fx:id="buttonLimpiar" layoutX="296.0" layoutY="263.0" mnemonicParsing="false" onAction="#onButtonLimpiarClick" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #A3D8F4; -fx-border-width: 2;" text="Limpiar">
       <font>
         <Font name="System Bold Italic" size="12.0" />
       </font>
-      <effect>
-        <DropShadow />
-      </effect>
     </Button>
-    <Button fx:id="buttonEliminar" layoutX="260.0" layoutY="267.0" mnemonicParsing="false" onAction="#onButtonEliminarClick" prefHeight="31.0" prefWidth="77.0" text="Eliminar">
+    <Button fx:id="buttonModificar" layoutX="116.0" layoutY="263.0" mnemonicParsing="false" onAction="#onButtonModificarClick" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #A3D8F4;" text="Modificar">
       <font>
         <Font name="System Bold Italic" size="12.0" />
       </font>
-      <effect>
-        <DropShadow />
-      </effect>
     </Button>
-    <TextField fx:id="txtFieldMarca" layoutX="164.0" layoutY="100.0">
+    <Button fx:id="buttonGuardar" layoutX="26.0" layoutY="263.0" mnemonicParsing="false" onAction="#onButtonGuardarClick" prefHeight="30.0" prefWidth="80.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #A3D8F4;" text="Guardar">
       <font>
         <Font name="System Bold Italic" size="12.0" />
       </font>
-      <effect>
-        <DropShadow />
-      </effect>
+    </Button>
+    <Label layoutX="69.0" layoutY="41.0" text="Matrícula">
+      <font>
+        <Font name="System Bold Italic" size="12.0" />
+      </font>
+    </Label>
+    <TextField fx:id="txtFieldMatricula" alignment="TOP_LEFT" layoutX="173.0" layoutY="37.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #A3D8F4; -fx-border-width: 2;">
+      <font>
+        <Font name="System Bold Italic" size="12.0" />
+      </font>
     </TextField>
-    <TextField fx:id="txtFieldModelo" layoutX="164.0" layoutY="150.0">
+    <ComboBox fx:id="cbTipo" layoutX="173.0" layoutY="187.0" prefWidth="150.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #A3D8F4;" />
+
+    <TextField fx:id="txtFieldMarca" alignment="TOP_LEFT" layoutX="173.0" layoutY="87.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #A3D8F4;">
       <font>
         <Font name="System Bold Italic" size="12.0" />
       </font>
-      <effect>
-        <DropShadow />
-      </effect>
     </TextField>
-    <Label layoutX="60.0" layoutY="104.0" text="Marca">
+    <TextField fx:id="txtFieldModelo" alignment="TOP_LEFT" layoutX="173.0" layoutY="137.0" style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #A3D8F4;">
+      <font>
+        <Font name="System Bold Italic" size="12.0" />
+      </font>
+    </TextField>
+    <Label layoutX="69.0" layoutY="91.0" text="Marca">
       <font>
         <Font name="System Bold Italic" size="12.0" />
       </font>
     </Label>
-    <Label layoutX="60.0" layoutY="154.0" text="Modelo">
+    <Label layoutX="69.0" layoutY="141.0" text="Modelo">
       <font>
         <Font name="System Bold Italic" size="12.0" />
       </font>
     </Label>
-    <Label layoutX="60.0" layoutY="204.0" text="Tipo">
+    <Label layoutX="69.0" layoutY="191.0" text="Tipo">
       <font>
         <Font name="System Bold Italic" size="12.0" />
       </font>
     </Label>
-    <Button fx:id="buttonLimpiar" layoutX="360.0" layoutY="267.0" mnemonicParsing="false" onAction="#onButtonLimpiarClick" prefHeight="31.0" prefWidth="77.0" text="Limpiar">
-      <font>
-        <Font name="System Bold Italic" size="12.0" />
-      </font>
-      <effect>
-        <DropShadow />
-      </effect>
-    </Button>
   </children>
 </Pane>
-
-
-

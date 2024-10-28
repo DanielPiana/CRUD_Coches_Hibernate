@@ -1,15 +1,27 @@
 package org.example.crud_coches_hibernatesql.Controller;
 
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.crud_coches_hibernatesql.domain.Coche;
+import org.example.crud_coches_hibernatesql.util.Alerts;
+import org.example.crud_coches_hibernatesql.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.example.crud_coches_hibernatesql.DAO.CocheDao;
+import org.example.crud_coches_hibernatesql.DAO.CocheDaoImpl;
 
-public class MainController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class MainController implements Initializable {
+
 
     @FXML
     private Button buttonEliminar;
@@ -24,22 +36,25 @@ public class MainController {
     private Button buttonModificar;
 
     @FXML
-    private ComboBox<?> cbTipo;
+    private ComboBox<String> cbTipo;
 
     @FXML
-    private TableColumn<?, ?> columnaMarca;
+    private TableColumn<Coche, String> columnaMarca;
 
     @FXML
-    private TableColumn<?, ?> columnaMatricula;
+    private TableColumn<Coche, String> columnaMatricula;
 
     @FXML
-    private TableColumn<?, ?> columnaModelo;
+    private TableColumn<Coche, String> columnaModelo;
 
     @FXML
-    private TableColumn<?, ?> columnaTipo;
+    private TableColumn<Coche, String> columnaTipo;
 
     @FXML
-    private TableView<?> tableCoches;
+    private TableColumn<Coche,Integer> columnaId;
+
+    @FXML
+    private TableView<Coche> tableCoches;
 
     @FXML
     private TextField txtFieldMarca;
@@ -50,29 +65,67 @@ public class MainController {
     @FXML
     private TextField txtFieldModelo;
 
+    String[] listaTipos = {"Gasolina","Diesel","Híbrido","Eléctrico"};
+
+    SessionFactory factory = HibernateUtil.getSessionFactory();
+    Session session = HibernateUtil.getSession();
+    CocheDao dao = new CocheDaoImpl();
+
     @FXML
-    void onButtonEliminarClick(ActionEvent event) {
+    void onButtonEliminarClick() {
+        if (tableCoches.getSelectionModel().getSelectedItem() != null) {
+            Coche coche = tableCoches.getSelectionModel().getSelectedItem();
+            dao.eliminarCoche(coche.getId(),session);
+            cargarTabla();
+            setearTextFieldsVacios();
+            Alerts.alertaGeneral("Coche eliminado correctamente","INFORMATION");
+        } else {
+            Alerts.alertaGeneral("Debe seleccionar un coche para eliminar","INFORMATION");
+        }
+    }
+
+    @FXML
+    void onButtonGuardarClick() {
 
     }
 
     @FXML
-    void onButtonGuardarClick(ActionEvent event) {
+    void onButtonLimpiarClick() {
 
     }
 
     @FXML
-    void onButtonLimpiarClick(ActionEvent event) {
+    void onButtonModificarClick() {
 
     }
 
     @FXML
-    void onButtonModificarClick(ActionEvent event) {
+    void onTableClick() {
 
     }
 
-    @FXML
-    void onTableClick(MouseEvent event) {
-
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Inicializamos los tipos en el comboBox
+        cbTipo.getItems().addAll(listaTipos);
+        cargarTabla();
+    }
+    public void cargarTabla() {
+        //Cargamos los datos en la tabla
+        columnaId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        columnaMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
+        columnaMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
+        columnaModelo.setCellValueFactory(new PropertyValueFactory<>("modelo"));
+        columnaTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        ObservableList<Coche> observableList = dao.listar(session);
+        tableCoches.setItems(observableList);
+    }
+    public void setearTextFieldsVacios() {
+        //Metodo para limpiar los textFields y el comboBox
+        txtFieldModelo.setText("");
+        txtFieldMatricula.setText("");
+        txtFieldMarca.setText("");
+        cbTipo.setValue("");
     }
 
 }
