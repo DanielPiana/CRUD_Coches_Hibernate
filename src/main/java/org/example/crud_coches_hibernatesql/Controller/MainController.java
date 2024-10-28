@@ -104,7 +104,7 @@ public class MainController implements Initializable {
 
     @FXML
     void onButtonLimpiarClick() {
-
+        setearTextFieldsVacios();
     }
 
     @FXML
@@ -114,7 +114,16 @@ public class MainController implements Initializable {
 
     @FXML
     void onTableClick() {
-
+        //Metodo para setear en los textFields y el comboBox lo seleccionado en la tabla
+        Coche coche = tableCoches.getSelectionModel().getSelectedItem();
+        if (coche == null) {
+            Alerts.alertaGeneral("No ha seleccionado nada","INFORMATION");
+        } else {
+            txtFieldMarca.setText(coche.getMarca());
+            txtFieldMatricula.setText(coche.getMatricula());
+            txtFieldModelo.setText(coche.getModelo());
+            cbTipo.setValue(coche.getTipo());
+        }
     }
 
     @Override
