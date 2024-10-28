@@ -6,6 +6,8 @@ import javafx.collections.ObservableList;
 import org.example.crud_coches_hibernatesql.domain.Coche;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
 import java.util.List;
 
 public class CocheDaoImpl implements CocheDao{
@@ -43,8 +45,12 @@ public class CocheDaoImpl implements CocheDao{
         Transaction transaction = null;
         try{
             transaction = session.beginTransaction();
-            Coche coche1 = session.get(Coche.class,id);
-            session.update(coche);
+            Coche cocheExistente = session.get(Coche.class,id);
+            cocheExistente.setMatricula(coche.getMatricula());
+            cocheExistente.setMarca(coche.getMarca());
+            cocheExistente.setModelo(coche.getModelo());
+            cocheExistente.setTipo(coche.getTipo());
+            session.update(cocheExistente);
             transaction.commit();
         }catch (Exception e) {
             if (transaction != null) {
@@ -71,22 +77,27 @@ public class CocheDaoImpl implements CocheDao{
     }
 
     @Override
-    public boolean existe(Coche coche,Session session) {
-        boolean comprobacion = false;
+    public boolean existe(String matricula, Session session) {
         Transaction transaction = null;
-        Coche coche1 = null;
-        try{
+        boolean comprobacion = false;
+        try {
             transaction = session.beginTransaction();
-            coche1 = session.get(Coche.class,coche.getId());
-            transaction.commit();
-        }catch (Exception e){
+
+            // Usamos HQL para buscar un coche con la matrícula proporcionada
+            String hql = "FROM Coche WHERE matricula = :matricula";
+            Query<Coche> query = session.createQuery(hql, Coche.class);
+            query.setParameter("matricula", matricula);
+
+            // Comprobamos si hay resultados
+            comprobacion = !query.list().isEmpty(); // Si la lista no está vacía, existe
+
+            transaction.commit(); // Confirmamos la transacción
+        } catch (Exception e) {
             if (transaction != null) {
-                transaction.rollback();
+                transaction.rollback(); // Revertimos si hay un error
             }
+            e.printStackTrace(); // Manejo de la excepción
         }
-        if (coche1 != null) {
-            comprobacion = true;
-        }
-        return comprobacion;
+        return comprobacion; // Retornamos el resultado de la comprobación
     }
 }

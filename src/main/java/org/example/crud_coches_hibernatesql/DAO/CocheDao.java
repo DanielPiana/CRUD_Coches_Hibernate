@@ -13,6 +13,6 @@ public interface CocheDao {
 
     ObservableList<Coche> listar(Session session);
 
-    boolean existe(Coche coche,Session session);
+    boolean existe(String matricula,Session session);
 
 }

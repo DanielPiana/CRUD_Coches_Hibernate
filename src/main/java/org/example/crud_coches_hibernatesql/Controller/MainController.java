@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.crud_coches_hibernatesql.domain.Coche;
 import org.example.crud_coches_hibernatesql.util.Alerts;
+import org.example.crud_coches_hibernatesql.util.Comprobaciones;
 import org.example.crud_coches_hibernatesql.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -65,7 +66,7 @@ public class MainController implements Initializable {
     @FXML
     private TextField txtFieldModelo;
 
-    String[] listaTipos = {"Gasolina","Diesel","Híbrido","Eléctrico"};
+    String[] listaTipos = {"Familiar","Monovolumen","Deportivo","SUV"};
 
     SessionFactory factory = HibernateUtil.getSessionFactory();
     Session session = HibernateUtil.getSession();
@@ -86,7 +87,19 @@ public class MainController implements Initializable {
 
     @FXML
     void onButtonGuardarClick() {
-
+        if (Comprobaciones.textosVacios(cbTipo,txtFieldMatricula,txtFieldMarca,txtFieldModelo)) {
+            Coche coche = new Coche(txtFieldMatricula.getText(),txtFieldMarca.getText(),txtFieldModelo.getText(),cbTipo.getSelectionModel().getSelectedItem());
+            if (!dao.existe(txtFieldMatricula.getText(),session)) {
+                dao.insertarCoche(coche,session);
+                cargarTabla();
+                setearTextFieldsVacios();
+                Alerts.alertaGeneral("Coche guardado correctamente","INFORMATION");
+            } else {
+                Alerts.alertaGeneral("Esa matrícula ya existe","INFORMATION");
+            }
+        } else {
+            Alerts.alertaGeneral("Debe rellenar todos los campos","WARNING");
+        }
     }
 
     @FXML
