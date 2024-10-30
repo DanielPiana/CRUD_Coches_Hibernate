@@ -37,6 +37,12 @@ public class Coche {
         this.tipo = tipo;
     }
 
+    public Coche(String marca, String modelo, String tipo) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.tipo = tipo;
+    }
+
     public Coche() {
     }
 

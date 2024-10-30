@@ -105,11 +105,36 @@ public class MainController implements Initializable {
     @FXML
     void onButtonLimpiarClick() {
         setearTextFieldsVacios();
+        activarBotonesYTxtField();
     }
+
 
     @FXML
     void onButtonModificarClick() {
-
+        Coche cocheReferencia = tableCoches.getSelectionModel().getSelectedItem();
+        if (cocheReferencia != null) {
+            if (tableCoches.isEditable()) {
+                tableCoches.setEditable(false);
+                tableCoches.setDisable(true);
+                buttonEliminar.setDisable(true);
+                buttonGuardar.setDisable(true);
+                txtFieldMatricula.setDisable(true);
+                Alerts.alertaGeneral("Escribe en los campos habilitados, lo que deseas modificar del coche seleccionado","INFORMATION");
+            } else {
+                if (Comprobaciones.textosVacios(cbTipo,txtFieldMarca,txtFieldModelo) && tableCoches.getSelectionModel().getSelectedItem()!=null) {
+                    Coche cocheMod = new Coche(txtFieldMarca.getText(),txtFieldModelo.getText(),cbTipo.getValue());
+                    dao.modificarCoche(cocheReferencia.getId(),cocheMod,session);
+                    setearTextFieldsVacios();
+                    activarBotonesYTxtField();
+                    cargarTabla();
+                    Alerts.alertaGeneral("Coche modificado correctamente", "INFORMATION");
+                } else {
+                    Alerts.alertaGeneral("Debe rellenar los campos a modificar y seleccionar un coche en la tabla\nRecuerda que la matrícula no se puede cambiar","INFORMATION");
+                }
+            }
+        } else {
+            Alerts.alertaGeneral("Debe seleccionar un coche para modificar","INFORMATION");
+        }
     }
 
     @FXML
@@ -130,15 +155,15 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Inicializamos los tipos en el comboBox
         cbTipo.getItems().addAll(listaTipos);
-        cargarTabla();
-    }
-    public void cargarTabla() {
-        //Cargamos los datos en la tabla
         columnaId.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnaMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
         columnaMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
         columnaModelo.setCellValueFactory(new PropertyValueFactory<>("modelo"));
         columnaTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        cargarTabla();
+        tableCoches.setEditable(true);// Hay que declarar explicitamente que la tabla es editable para que el metodo de modificar pueda devolver true si es editable
+    }
+    public void cargarTabla() {
         ObservableList<Coche> observableList = dao.listar(session);
         tableCoches.setItems(observableList);
     }
@@ -149,5 +174,11 @@ public class MainController implements Initializable {
         txtFieldMarca.setText("");
         cbTipo.setValue("");
     }
-
+    public void activarBotonesYTxtField() {
+        tableCoches.setEditable(true);
+        tableCoches.setDisable(false);
+        txtFieldMatricula.setDisable(false);
+        buttonGuardar.setDisable(false);
+        buttonEliminar.setDisable(false);
+    }
 }
